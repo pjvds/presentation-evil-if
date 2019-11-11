@@ -1,4 +1,4 @@
-# Messaging, MicroServices and why IF is evil
+# Worlds most EVIL keyword
 
 ---
 
@@ -12,27 +12,29 @@
 
 ---
 
-![fit](logos/wercker.png)
+![inline fit](logos/wercker.png)
 
 [.background-color: #FFFFFF]
 
 ^ wercker
+* continues integration and delivery platform
 * serving 100k builds per day
 * world wide customer base
 * sold to Oracle
 
 ---
 
-![fit](logos/doubledutch.png)
+![inline fit](logos/doubledutch.png)
 
 ^ doubledutch
+* eventing platform software
 * 10.000 of people simultaneously try to slam the API
 * we serve millions of customers a year
 * There’s our data pipeline that processes billions of data points. We capture taps, swipes, and scrolls and report on them in real time.
 
 ---
 
-![fit](logos/microsoft.png)
+![inline fit](logos/microsoft.png)
 
 [.background-color: #FFFFFF]
  
@@ -41,7 +43,7 @@
 
 ---
 
-![fit](logos/apple.png)
+![inline fit](logos/apple.png)
 
 [.background-color: #FFFFFF]
 
@@ -61,16 +63,6 @@
 
 ---
 
-# I :heart: messaging AND distribution
-
-![fit](concepts/distributed-system.png)
-
-
-[.text: #000000 ]
-[.background-color: #FFFFFF]
-
----
-
 # 155 day streak record
 
 ![](logos/github.png)
@@ -83,15 +75,56 @@
 
 ---
 
+![inline fit](concepts/exit-vim.png)
+
+[.background-color: #000000]
+
+---
+
+![fit](concepts/i3.png)
+
+[.background-color: #000000]
+
+---
+
+![inline](concepts/streamsdb.png)
+
+---
+
+# I :heart: messaging AND distribution
+
+![fit](concepts/distributed-system.png)
+
+
+[.text: #000000 ]
+[.background-color: #FFFFFF]
+
+---
+
+![](concepts/talk.png)
+
+[.background-color: #000000]
+
+^
+* What will we talk about?
+* Messaging, scalability, domain driven design, micro services
+
+---
+
 # Let's talk about EVIL
 
 ![fit](concepts/evil.jpg)
 
 ---
 
-# What's Worlds most evil keyword?
+# [fit] What's the most evil
+# [fit] keyword you know?
 
 ---
+
+![inline fit](concepts/goto.png)
+
+___
 
 # IF is EVIL
 
@@ -99,27 +132,54 @@
 
 ---
 
-# 2 problems
+# Two-face
+
+![fit](concepts/two-face.jpg)
 
 ---
 
-# IF the protector
+# the protector
+
+![left fit](concepts/protector.png)
+
+---
+
+```go
+// name is required
+if len(name) == 0 {
+  return errors.New("name is required")
+}
+
+// make sure there is a product
+if product == nil {
+  return errors.New("product cannot be nil")
+}
+
+// never go out of bound
+if cursor > limit {
+  return errors.New("cursor out of bound")
+}
+
+// make sure is valid json
+if ok, err := deserialize(input); !ok {
+  return errors.Wrap(err, "deserialization failed")
+}
+```
 
 ^ 
 * protects our code for all the evil from the outside world
 * make sure something is not null
 * index is not out of bound
+* good old defensive programming
 
 ---
 
-# IF the deceiver
+# the deceiver
 
-^
-* 
+![right fit](concepts/deceiver.png)
 
----
-
-# example: parkeer garage
+^ 
+* IF here is not technocratic, but business oriented
 
 ---
 
@@ -129,43 +189,281 @@ A monolithic design is characterised by such a tight coupling among modules that
 
 ---
 
-## Break it
+![inline fit](concepts/boom.png)
+
+[.background-color: #FFFFFF]
+
+---
+
+![left fit](concepts/checkout.png)
+
+# checkout policy
+
+the product must be in *stock*
+
+it must be allowed to *ship* to country
+
+the *payment* must be accepted
+
+*product* must not be deleted
+
+the *price* should not have changed
+
+^ TODO: are the business rules still in line with the story?
+
+---
+
+# how would be satisfy the requirements?
+
+![inline](concepts/checkout-call.png)
+
+[.background-color: #FFFFFF]
+
+^ TODO: break down in steps
+
+---
+
+```golang
+func Checkout(r CheckoutRequest) {
+  // make sure we have stock
+  if inventory.GetStock(r.ProductId) < r.Quantity {
+    return errors.New("insufficient stock")
+  }
+
+  // make sure it is not deleted
+  if product.Status(r.ProductId) == Deleted {
+    return errors.New("product unavailable")
+  }
+
+  // check the price
+  if pricing.GetPrice(r.ProductId) != r.Price {
+    return errors.New("product price changed")
+  }
+
+  // payment must be accepted
+  if payment.GetStatus(r.OrderId) != Accepted {
+    return errors.New("payment not accepted")
+  }
+
+  // remove quantity from inventory
+  inventory.DecreaseStock(r.ProductId, r,Quantity)
+
+  // ship it!
+  shipment.MarkReady(r.OrderId);
+}
+```
+
+^ here the if statement is not technocratic, but a business rule
+
+---
+
+![inline fit](concepts/service-calling.png)
+
+[.background-color: #FFFFFF]
+
+---
+
+# How do we gaurantee consistency?
+
+| ID | Name      | Quantity | Price  |
+|----|-----------|----------|--------|
+| 1  | Product A | 13       | € 42,- |
+| 2  | Product B | 1        | € 3,14 |
+
+---
+
+```pgsql
+begin transaction
+  var stock = SELECT stock FROM Products
+              WHERE Id = @ProductID;
+
+  IF(stock <= @Quantity)
+    THROW 51000, 'insufficient stock';  
+
+  var payed = SELECT isPayed FROM Order
+              WHERE Id = @PaymentID;
+
+  IF(payed)
+    THROW 52000, 'order not payed';
+  IF(kk)
+
+  UPDATE Products SET Stock = stock-@Quantity;
+
+  UPDATE Order SET readyToShip = true;
+end transaction
+```
+
+^ // serializable isolation level
+
+---
+
+# How to *scale*?
+
+![](concepts/scale-mini.jpg)
+![](concepts/small-scale.jpg)
+![](concepts/large-scale.jpg)
+
+^
+* scale with bigger hardware
+* horizontal scalling
+* forklift upgrade
+* won't work with document databases
+
+---
+
+![fit](concepts/database-cluster.png)
+
+^
+* we can introduce more nodes
+* data will be replicated
+* but won't be able to have ACID properties anymore
+
+---
+
+![fit](concepts/document-database.png)
+
+^ trully internet scale, but lack of transactions
+
+---
+
+![](concepts/coupling.png)
+
+# coupling
+
+^ coupling is the degree to which each module relies on each one of the other modules.
+
+---
+
+# Split it!
 
 ![](concepts/breaking-monolith.jpeg)
 
 ---
 
-# one: scaling problems
+# Micro Services
+
+![inline](concepts/microservices.png)
+
+[.background-color: #FFFFFF]
 
 ---
 
-# two: coupling problems
+![fit](concepts/autonomous.png)
+
+^ the most important property of an micro service
+
+[.background-color: #FFFFFF]
 
 ---
 
-# back to 1901
-
-
-^ how would we solve this in the early days?
+> “No μService should ever depend on another being available"
 
 ---
 
-# the internet happened
+![fit](concepts/temporal-coupling.png)
+
+[.background-color: #FFFFFF]
 
 ---
 
-# dealing with strong consistency
+![inline fit](concepts/service-calling.png)
+
+[.background-color: #FFFFFF]
 
 ---
 
-# IF the deciever
+# How do you depend on your partner?
 
-^ where do we handle this race contidion?
-
----
-
-# Commands should never fail
+![](concepts/wedding.jpg)
 
 ---
 
-# [fit] ⌘+C ⌘+V = :v:
+![fit](concepts/whatsapp.jpg)
+
+[.background-color: #000000]
+
+---
+
+![fit](concepts/queue.png)
+
+[.background-color: #FFFFFF]
+
+---
+
+![inline fit](concepts/order-chat.png)
+
+---
+
+![](concepts/checkout-step-1.png)
+
+---
+
+![](concepts/checkout-step-2.png)
+
+---
+
+![](concepts/checkout-step-3.png)
+
+---
+
+![](concepts/checkout-step-4.png)
+
+---
+
+![](concepts/checkout-step-5.png)
+
+---
+
+![](concepts/checkout-process.png)
+
+^
+* what happens when during checkout the price changes?
+
+---
+
+# Add Product to Shoppingcard
+
+```js
+{
+  orderID: 1,
+  productID: 2,
+  quantity: 1,
+  price: {
+    amount: 7.98,    // <-- save price in message
+    currency: "USD", 
+  }
+}
+```
+
+---
+
+![](concepts/vertical-decomposition.png)
+
+---
+
+![fit](concepts/composite-ui.png)
+
+[.background-color: #FFFFFF]
+
+---
+
+# compensating actions
+
+![inline](concepts/undo.png)
+
+[.background-color: #FFFFFF]
+
+---
+
+![left fit](concepts/dating-profile.png)
+![right fit](concepts/hpc-services.png)
+
+[.background-color: #FFFFFF]
+
+---
+
+> No μService represents an *business* entity, but rather serves an *expect* of one
+
+---
+
+![](concepts/great-audience.png)
