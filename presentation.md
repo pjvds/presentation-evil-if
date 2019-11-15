@@ -421,7 +421,7 @@ end transaction
 
 ---
 
-# Add Product to Shoppingcard
+# Add Product to Shopping cart
 
 ```js
 {
