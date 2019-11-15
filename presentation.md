@@ -213,7 +213,7 @@ the *price* should not have changed
 
 ---
 
-# how would be satisfy the requirements?
+# how would we satisfy the requirements?
 
 ![inline](concepts/checkout-call.png)
 
