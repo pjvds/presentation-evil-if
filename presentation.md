@@ -263,7 +263,7 @@ func Checkout(r CheckoutRequest) {
 
 ---
 
-# How do we gaurantee consistency?
+# How do we guarantee consistency?
 
 | ID | Name      | Quantity | Price  |
 |----|-----------|----------|--------|
@@ -305,7 +305,7 @@ end transaction
 
 ^
 * scale with bigger hardware
-* horizontal scalling
+* horizontal scaling
 * forklift upgrade
 * won't work with document databases
 
@@ -462,7 +462,7 @@ end transaction
 
 ---
 
-> No μService represents an *business* entity, but rather serves an *expect* of one
+> No μService represents an *business* entity, but rather serves an *expectation* of one
 
 ---
 
