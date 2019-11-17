@@ -466,4 +466,6 @@ end transaction
 
 ---
 
+# You've been a great audience!
+
 ![](concepts/great-audience.png)
