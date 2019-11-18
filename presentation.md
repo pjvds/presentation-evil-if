@@ -468,4 +468,8 @@ end transaction
 
 # You've been a great audience!
 
-![](concepts/great-audience.png)
+Questions?
+
+WhatsApp: +31 6 54 22 44 89
+Mail: pj@craftify.nl
+Twitter: @pjvds
