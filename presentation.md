@@ -109,7 +109,7 @@ theme: Poster, 1
 
 [.background-color: #000000]
 
-^
+^ Notes
 * What will we talk about?
 * Messaging, scalability, domain driven design, micro services
 
@@ -170,7 +170,7 @@ if ok, err := deserialize(input); !ok {
 }
 ```
 
-^ 
+^ Notes
 * protects our code for all the evil from the outside world
 * make sure something is not null
 * index is not out of bound
@@ -182,7 +182,7 @@ if ok, err := deserialize(input); !ok {
 
 ![right fit](concepts/deceiver.png)
 
-^ 
+^ Notes
 * IF here is not technocratic, but business oriented
 
 ---
@@ -307,7 +307,7 @@ end transaction
 ![](concepts/small-scale.jpg)
 ![](concepts/large-scale.jpg)
 
-^
+^ Notes:
 * scale with bigger hardware
 * horizontal scaling
 * forklift upgrade
@@ -317,7 +317,7 @@ end transaction
 
 ![fit](concepts/database-cluster.png)
 
-^
+^ Notes:
 * we can introduce more nodes
 * data will be replicated
 * but won't be able to have ACID properties anymore
@@ -420,7 +420,7 @@ end transaction
 
 ![](concepts/checkout-process.png)
 
-^
+^ Notes:
 * what happens when during checkout the price changes?
 
 ---
