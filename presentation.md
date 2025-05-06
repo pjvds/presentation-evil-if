@@ -1,3 +1,7 @@
+slidenumbers: false
+autoscale: true
+theme: Poster, 1
+
 # Worlds most EVIL keyword
 
 ---
