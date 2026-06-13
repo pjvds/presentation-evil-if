@@ -85,16 +85,6 @@ theme: Poster, 1
 
 ---
 
-![fit](concepts/i3.png)
-
-[.background-color: #000000]
-
----
-
-![inline](concepts/streamsdb.png)
-
----
-
 # I :heart: messaging AND distribution
 
 ![fit](concepts/distributed-system.png)
@@ -146,6 +136,10 @@ ___
 
 ![left fit](concepts/protector.png)
 
+^ Notes
+* The protector protects the code from evil
+* Next: code samples for the protector
+
 ---
 
 ```go
@@ -183,7 +177,10 @@ if ok, err := deserialize(input); !ok {
 ![right fit](concepts/deceiver.png)
 
 ^ Notes
+* The deceiver looks like it is protecting, but it is not
 * IF here is not technocratic, but business oriented
+* I want to help you see the dark side of the deceiver
+* I want to help you to learn how to spot the deceiver
 
 ---
 
@@ -376,7 +373,7 @@ end transaction
 
 ---
 
-# How do you depend on your partner?
+# How do you depend on others?
 
 ![](concepts/wedding.jpg)
 
@@ -451,6 +448,14 @@ end transaction
 
 ---
 
+# don't race if you are not prepared to loose
+
+![fit](concepts/race.jpg)
+
+[.background-color: #FFFFFF]
+
+---
+
 # compensating actions
 
 ![inline](concepts/undo.png)
@@ -475,5 +480,11 @@ end transaction
 Questions?
 
 WhatsApp: +31 6 54 22 44 89
-Mail: pj@craftify.nl
+Mail: pieterjoost@visionisers.nl
 Twitter: @pjvds
+
+---
+
+Don't race if you are not prepared to lose
+
+---
